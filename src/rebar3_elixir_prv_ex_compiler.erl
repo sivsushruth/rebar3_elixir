@@ -53,7 +53,7 @@ compile_libs(State) ->
     {ok, Apps} = rebar_utils:list_dir(rebar_dir:root_dir(State) ++ "/elixir_libs"),
     compile_libs(State, Apps).
 
-compile_libs(State, []) ->
+compile_libs(_State, []) ->
     ok;          
 
 compile_libs(State, [App | Apps]) ->
@@ -71,7 +71,7 @@ compile_libs(State, [App | Apps]) ->
     transfer_libs(State, Libs, LibsDir),
     compile_libs(State, Apps).
 
-transfer_libs(State, [], LibsDir) ->
+transfer_libs(_State, [], _LibsDir) ->
     ok;
 
 transfer_libs(State, [Lib | Libs], LibsDir) ->
@@ -81,17 +81,11 @@ transfer_libs(State, [Lib | Libs], LibsDir) ->
 
 maybe_copy_dir(Source, Target) ->
     TargetApp = lists:last(filename:split(Source)),
-    case filelib:is_dir(Target ++ TargetApp) of
+    case filelib:is_dir(filename:join([Target, TargetApp])) of
         true -> ok;
-        false -> rebar_file_utils:cp_r([Source], Target)
+        false -> rebar_file_utils:cp_r([Source], filename:join([Target, TargetApp]))
     end.    
     
 -spec format_error(any()) ->  iolist().
 format_error(Reason) ->
     io_lib:format("~p", [Reason]).
-
-maybe_clear_dir(Dir) ->
-    case filelib:is_dir(Dir) of
-        true -> ec_file:remove(Dir, [recursive]);
-        false -> false
-    end.
