@@ -10,13 +10,17 @@ Use
 Add the plugin to your rebar config:
 
     {plugins, [
-        { rebar3_elixir, ".*", {git, "https://github.com/barrel-db/rebar3_elixir.git", {branch, "master"}}}
+        { rebar3_elixir, ".*", {git, "https://github.com/sivsushruth/rebar3_elixir.git", {branch, "master"}}}
     ]}.
+    {provider_hooks, [{post, [{compile, {ex, compile}}]}]}.
+    {elixir_opts, 
+      [{lib_dir, "/usr/local/lib/elixir/lib/"},
+      {bin_dir, "/usr/local/bin/"},
+      {env, dev}]
+    }.
 
-Then just call your plugin directly in an existing application:
+Place your elixir mix applications in ./elixir_libs.
 
+If you want to use it with relx add the following line :
 
-    $ rebar3 rebar3_elixir
-    ===> Fetching rebar3_elixir
-    ===> Compiling rebar3_elixir
-    <Plugin Output>
+    {lib_dirs, ["/usr/local/lib/elixir/lib/"]},
