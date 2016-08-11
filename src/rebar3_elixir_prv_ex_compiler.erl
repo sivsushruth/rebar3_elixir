@@ -3,10 +3,8 @@
 -export([init/1, do/1, format_error/1]).
 
 -define(PROVIDER, compile).
--define(DEPS, [{default, app_discovery}]).
+-define(DEPS, [{default, compile}]).
 -define(NAMESPACE, ex).
-
--define(ELIXIR_APPS, ["elixir", "mix", "logger", "iex", "ex_unit"]).
 
 -spec init(rebar_state:t()) -> {ok, rebar_state:t()}.
 init(State) ->
@@ -30,7 +28,7 @@ do(State) ->
     {ok, State}.
 
 add_elixir_libs(State) ->
-    rebar_api:console("===> Adding Elixir Libs ~p", []),
+    rebar_api:console("===> Adding Elixir Libs", []),
     MixState = add_elixir(State),
     compile_libs(MixState),
     ok.
